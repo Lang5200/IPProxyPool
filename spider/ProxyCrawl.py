@@ -77,7 +77,7 @@ class ProxyCrawl(object):
         for url in parser['urls']:
             response = Html_Downloader.download(url)
             if response is not None:
-                proxylist = html_parser.parse(response, parser)
+                proxylist = html_parser.parse(url, response, parser)
                 if proxylist is not None:
                     for proxy in proxylist:
                         proxy_str = '%s:%s' % (proxy['ip'], proxy['port'])

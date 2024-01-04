@@ -13,19 +13,20 @@ class Html_Parser(object):
     def __init__(self):
         self.ips = IPAddresss(QQWRY_PATH)
 
-    def parse(self, response, parser):
+    def parse(self, url, response, parser):
         '''
 
+        :param url:
         :param response: 响应
         :param type: 解析方式
         :return:
         '''
         if parser['type'] == 'xpath':
-            return self.XpathPraser(response, parser)
+            return self.XpathPraser(url, response, parser)
         elif parser['type'] == 'regular':
-            return self.RegularPraser(response, parser)
+            return self.RegularPraser(url, response, parser)
         elif parser['type'] == 'module':
-            return getattr(self, parser['moduleName'], None)(response, parser)
+            return getattr(self, parser['moduleName'], None)(url, response, parser)
         else:
             return None
 
@@ -40,10 +41,10 @@ class Html_Parser(object):
                 return True
         return False
 
-
-    def XpathPraser(self, response, parser):
+    def XpathPraser(self, url, response, parser):
         '''
         针对xpath方式进行解析
+        :param url:
         :param response:
         :param parser:
         :return:
@@ -77,9 +78,10 @@ class Html_Parser(object):
             proxylist.append(proxy)
         return proxylist
 
-    def RegularPraser(self, response, parser):
+    def RegularPraser(self, url, response, parser):
         '''
         针对正则表达式进行解析
+        :param url:
         :param response:
         :param parser:
         :return:
@@ -121,9 +123,8 @@ class Html_Parser(object):
                 proxylist.append(proxy)
             return proxylist
 
-
-    def CnproxyPraser(self, response, parser):
-        proxylist = self.RegularPraser(response, parser)
+    def CnproxyPraser(self, url, response, parser):
+        proxylist = self.RegularPraser(url, response, parser)
         chardict = {'v': '3', 'm': '4', 'a': '2', 'l': '9', 'q': '0', 'b': '5', 'i': '7', 'w': '6', 'r': '8', 'c': '1'}
 
         for proxy in proxylist:
@@ -136,8 +137,7 @@ class Html_Parser(object):
             proxy['port'] = new_port
         return proxylist
 
-
-    def proxy_listPraser(self, response, parser):
+    def proxy_listPraser(self, url, response, parser):
         proxylist = []
         pattern = re.compile(parser['pattern'])
         matchs = pattern.findall(response)
