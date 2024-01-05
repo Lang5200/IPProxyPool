@@ -75,8 +75,12 @@ class ProxyCrawl(object):
     def crawl(self, parser):
         html_parser = Html_Parser()
         for url in parser['urls']:
-            response = Html_Downloader.download(url)
-            if response is not None:
+            response = Html_Downloader.download(url, parser)
+            if type(response) == bool and not response:
+                log = f'IPProxyPool----->>>>>>>> {url} 请求失败！'
+                sys.stdout.write(log + "\r\n")
+                sys.stdout.flush()
+            elif response is not None:
                 proxylist = html_parser.parse(url, response, parser)
                 if proxylist is not None:
                     for proxy in proxylist:
