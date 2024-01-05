@@ -56,7 +56,13 @@ class Html_Parser(object):
             try:
                 ip = proxy.xpath(parser['position']['ip'])[0].text
                 port = proxy.xpath(parser['position']['port'])[0].text
-                type = 0
+                if ip is None:
+                    ip = proxy.xpath(f"string({parser['position']['ip']})")
+                if port is None:
+                    port = proxy.xpath(f"string({parser['position']['port']})")
+                ip = ip.strip()
+                port = port.strip()
+                types = 0
                 protocol = 0
                 addr = self.ips.getIpAddr(self.ips.str2ip(ip))
                 country = text_('')
