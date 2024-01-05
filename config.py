@@ -12,89 +12,196 @@ ip，端口，类型(0高匿名，1透明)，protocol(0 http,1 https),country(�
  speed(连接速度)
 '''
 parserList = [
+    # https://proxy-list.org 国外 需要翻墙
     {
-        'urls': ['http://www.66ip.cn/%s.html' % n for n in ['index'] + list(range(2, 12))],
-        'type': 'xpath',
-        'pattern': ".//*[@id='main']/div/div[1]/table/tr[position()>1]",
-        'position': {'ip': './td[1]', 'port': './td[2]', 'type': './td[4]', 'protocol': ''}
-    },
-    {
-        'urls': ['http://www.66ip.cn/areaindex_%s/%s.html' % (m, n) for m in range(1, 35) for n in range(1, 10)],
-        'type': 'xpath',
-        'pattern': ".//*[@id='footer']/div/table/tr[position()>1]",
-        'position': {'ip': './td[1]', 'port': './td[2]', 'type': './td[4]', 'protocol': ''}
-    },
-    {
-        'urls': ['http://cn-proxy.com/', 'http://cn-proxy.com/archives/218'],
-        'type': 'xpath',
-        'pattern': ".//table[@class='sortable']/tbody/tr",
-        'position': {'ip': './td[1]', 'port': './td[2]', 'type': '', 'protocol': ''}
-
-    },
-    {
-        'urls': ['http://www.mimiip.com/gngao/%s' % n for n in range(1, 10)],
-        'type': 'xpath',
-        'pattern': ".//table[@class='list']/tr",
-        'position': {'ip': './td[1]', 'port': './td[2]', 'type': '', 'protocol': ''}
-
-    },
-    {
-        'urls': ['https://proxy-list.org/english/index.php?p=%s' % n for n in range(1, 10)],
+        'urls': ['https://proxy-list.org/english/index.php?p=%s' % n for n in range(1, 21)],
         'type': 'module',
         'moduleName': 'proxy_listPraser',
         'pattern': 'Proxy\(.+\)',
         'position': {'ip': 0, 'port': -1, 'type': -1, 'protocol': 2}
-
     },
+
+
+    # http://incloak.com 国外 需要翻墙 能爬到ip，但是感觉ip没一个能用的
     {
         'urls': ['http://incloak.com/proxy-list/%s#list' % n for n in
-                 ([''] + ['?start=%s' % (64 * m) for m in range(1, 10)])],
+                 ([''] + ['?start=%s' % (64 * m) for m in range(1, 11)])],
+        'useSeleniumDownloader': True,
+        'timeout': 30,
         'type': 'xpath',
-        'pattern': ".//table[@class='proxy__t']/tbody/tr",
+        'pattern': ".//div[@class='table_block']/table/tbody/tr",
         'position': {'ip': './td[1]', 'port': './td[2]', 'type': '', 'protocol': ''}
+    },
 
-    },
+    # https://ip.ihuan.me 国内 小幻HTTP代理，这个框架暂时无法破解分页
     {
-        'urls': ['http://www.kuaidaili.com/proxylist/%s/' % n for n in range(1, 11)],
+        'urls': [
+            'https://ip.ihuan.me/address/5Lit5Zu9.html'  #中国
+            'https://ip.ihuan.me/address/5YyX5Lqs.html'  #北京
+            'https://ip.ihuan.me/address/5aSp5rSl.html'  #天津
+            'https://ip.ihuan.me/address/5LiK5rW3.html'  #上海
+            'https://ip.ihuan.me/address/6YeN5bqG.html'  #重庆
+            'https://ip.ihuan.me/address/5rKz5YyX.html'  #河北
+            'https://ip.ihuan.me/address/5bGx6KW/.html'  #山西
+            'https://ip.ihuan.me/address/6L695a6B.html'  #辽宁
+            'https://ip.ihuan.me/address/5ZCJ5p6X.html'  #吉林
+            'https://ip.ihuan.me/address/6buR6b6Z5rGf.html'  #黑龙江
+            'https://ip.ihuan.me/address/5rGf6IuP.html'  #江苏
+            'https://ip.ihuan.me/address/5rWZ5rGf.html'  #浙江
+            'https://ip.ihuan.me/address/5a6J5b69.html'  #安徽
+            'https://ip.ihuan.me/address/56aP5bu6.html'  #福建
+            'https://ip.ihuan.me/address/5rGf6KW/.html'  #江西
+            'https://ip.ihuan.me/address/5bGx5Lic.html'  #山东
+            'https://ip.ihuan.me/address/5rKz5Y2X.html'  #河南
+            'https://ip.ihuan.me/address/5rmW5YyX.html'  #湖北
+            'https://ip.ihuan.me/address/5rmW5Y2X.html'  #湖南
+            'https://ip.ihuan.me/address/5bm/5Lic.html'  #广东
+            'https://ip.ihuan.me/address/5rW35Y2X.html'  #海南
+            'https://ip.ihuan.me/address/5Zub5bed.html'  #四川
+            'https://ip.ihuan.me/address/6LS15bee.html'  #贵州
+            'https://ip.ihuan.me/address/5LqR5Y2X.html'  #云南
+            'https://ip.ihuan.me/address/6ZmV6KW/.html'  #陕西
+            'https://ip.ihuan.me/address/55SY6IKD.html'  #甘肃
+            'https://ip.ihuan.me/address/6Z2S5rW3.html'  #青海
+            'https://ip.ihuan.me/address/5Y+w5rm+.html'  #台湾
+            'https://ip.ihuan.me/address/5YaF6JKZ5Y+k.html'  #内蒙古
+            'https://ip.ihuan.me/address/5bm/6KW/.html'  #广西
+            'https://ip.ihuan.me/address/6KW/6JeP.html'  #西藏
+            'https://ip.ihuan.me/address/5a6B5aSP.html'  #宁夏
+            'https://ip.ihuan.me/address/5paw55aG.html'  #新疆
+            'https://ip.ihuan.me/address/6aaZ5riv.html'  #香港
+            'https://ip.ihuan.me/address/576O5Zu9.html'  #美国
+            'https://ip.ihuan.me/address/5oSP5aSn5Yip.html'  #意大利
+            'https://ip.ihuan.me/address/5Lym5be056ys5aSn5Yy6.html'  #伦巴第大区
+            'https://ip.ihuan.me/address/57Gz5YWw5bm/5Z+f5biC.html'  #米兰广域市
+            'https://ip.ihuan.me/address/5Y2w5bqm.html'  #印度
+            'https://ip.ihuan.me/address/5Y2h57qz5aGU5YWL6YKm.html'  #卡纳塔克邦
+            'https://ip.ihuan.me/address/54+t5Yqg572X5bCU.html'  #班加罗尔
+            'https://ip.ihuan.me/address/5Lit5Zu9.html'  #中国
+            'https://ip.ihuan.me/address/5YyX5Lqs.html'  #北京
+            'https://ip.ihuan.me/address/5Y2w5bqm5bC86KW/5Lqa.html'  #印度尼西亚
+            'https://ip.ihuan.me/address/5Lit5Yqg6YeM5pu85Li555yB.html'  #中加里曼丹省
+            'https://ip.ihuan.me/address/5biV5pyX5Y2h5ouJ5Lqa5biC.html'  #帕朗卡拉亚市
+            'https://ip.ihuan.me/address/5Lit5Zu9.html'  #中国
+            'https://ip.ihuan.me/address/5bm/5Lic.html'  #广东
+            'https://ip.ihuan.me/address/5rex5Zyz.html'  #深圳
+            'https://ip.ihuan.me/address/5Lit5Zu9.html'  #中国
+            'https://ip.ihuan.me/address/5rGf6IuP.html'  #江苏
+            'https://ip.ihuan.me/address/5Y2X6YCa.html'  #南通
+            'https://ip.ihuan.me/address/6Z+p5Zu9.html'  #韩国
+            'https://ip.ihuan.me/address/6aaW5bCU.html'  #首尔
+            'https://ip.ihuan.me/address/5L+E572X5pav.html'  #俄罗斯
+            'https://ip.ihuan.me/address/6L2m6YeM6ZuF5a6+5pav5YWL5bee.html'  #车里雅宾斯克州
+            'https://ip.ihuan.me/address/6L2m6YeM6ZuF5a6+5pav5YWL.html'  #车里雅宾斯克
+            'https://ip.ihuan.me/address/5Lit5Zu9.html'  #中国
+            'https://ip.ihuan.me/address/5YyX5Lqs.html'  #北京
+            'https://ip.ihuan.me/address/5Z2m5qGR5bC85Lqa.html'  #坦桑尼亚
+            'https://ip.ihuan.me/address/5aSa5aSa6ams5Yy6.html'  #多多马区
+            'https://ip.ihuan.me/address/5aSa5aSa6ams.html'  #多多马
+            'https://ip.ihuan.me/address/5qC86bKB5ZCJ5Lqa.html'  #格鲁吉亚
+            'https://ip.ihuan.me/address/5Z2m5qGR5bC85Lqa.html'  #坦桑尼亚
+            'https://ip.ihuan.me/address/5aSa5aSa6ams5Yy6.html'  #多多马区
+            'https://ip.ihuan.me/address/5aSa5aSa6ams.html'  #多多马
+            'https://ip.ihuan.me/address/5qC86bKB5ZCJ5Lqa.html'  #格鲁吉亚
+            'https://ip.ihuan.me/address/5aGe5YaF5Yqg5bCU.html'  #塞内加尔
+            'https://ip.ihuan.me/address/5Lit5Zu9.html'  #中国
+            'https://ip.ihuan.me/address/5rKz5Y2X.html'  #河南
+            'https://ip.ihuan.me/address/6YOR5bee.html'  #郑州
+            'https://ip.ihuan.me/address/576O5Zu9.html'  #美国
+            'https://ip.ihuan.me/address/5byX5ZCJ5bC85Lqa5bee.html'  #弗吉尼亚州
+            'https://ip.ihuan.me/address/5pav54m554G1.html'  #斯特灵
+            'https://ip.ihuan.me/address/5LmM5YW55Yir5YWL5pav5Z2m.html'  #乌兹别克斯坦
+            'https://ip.ihuan.me/address/5aGU5LuA5bmy.html'  #塔什干
+            'https://ip.ihuan.me/address/5Lit5Zu9.html'  #中国
+            'https://ip.ihuan.me/address/5bm/5Lic.html'  #广东
+            'https://ip.ihuan.me/address/5rGV5aS0.html'  #汕头
+        ],
+        'useSeleniumDownloader': True,
         'type': 'xpath',
-        'pattern': ".//*[@id='index_free_list']/table/tbody/tr[position()>0]",
-        'position': {'ip': './td[1]', 'port': './td[2]', 'type': './td[3]', 'protocol': './td[4]'}
+        'pattern': ".//div[@class='table-responsive']/table/tbody/tr",
+        'position': {'ip': './td[1]', 'port': './td[2]', 'type': '', 'protocol': ''}
     },
-    {
-        'urls': ['http://www.kuaidaili.com/free/%s/%s/' % (m, n) for m in ['inha', 'intr', 'outha', 'outtr'] for n in
-                 range(1, 11)],
-        'type': 'xpath',
-        'pattern': ".//*[@id='list']/table/tbody/tr[position()>0]",
-        'position': {'ip': './td[1]', 'port': './td[2]', 'type': './td[3]', 'protocol': './td[4]'}
-    },
-    {
-        'urls': ['http://www.cz88.net/proxy/%s' % m for m in
-                 ['index.shtml'] + ['http_%s.shtml' % n for n in range(2, 11)]],
-        'type': 'xpath',
-        'pattern': ".//*[@id='boxright']/div/ul/li[position()>1]",
-        'position': {'ip': './div[1]', 'port': './div[2]', 'type': './div[3]', 'protocol': ''}
 
-    },
+    # https://www.89ip.cn 国内 89ip
     {
-        'urls': ['http://www.ip181.com/daili/%s.html' % n for n in range(1, 11)],
+        'urls': ['https://www.89ip.cn/index_%s.html' % n for n in range(1, 21)],
         'type': 'xpath',
-        'pattern': ".//div[@class='row']/div[3]/table/tbody/tr[position()>1]",
-        'position': {'ip': './td[1]', 'port': './td[2]', 'type': './td[3]', 'protocol': './td[4]'}
+        'pattern': ".//div[@class='layui-form']/table/tbody/tr",
+        'position': {'ip': './td[1]', 'port': './td[2]', 'type': '', 'protocol': ''}
+    },
 
-    },
+    # https://www.beesproxy.com 国内 蜜蜂代理
     {
-        'urls': ['http://www.xicidaili.com/%s/%s' % (m, n) for m in ['nn', 'nt', 'wn', 'wt'] for n in range(1, 8)],
+        'urls': ['https://www.beesproxy.com/free/page/%s' % n for n in range(1, 11)],
         'type': 'xpath',
-        'pattern': ".//*[@id='ip_list']/tr[position()>1]",
-        'position': {'ip': './td[2]', 'port': './td[3]', 'type': './td[5]', 'protocol': './td[6]'}
+        'pattern': ".//figure[@class='wp-block-table']/table/tbody/tr",
+        'position': {'ip': './td[1]', 'port': './td[2]', 'type': '', 'protocol': ''}
     },
+
+    # http://www.kxdaili.com 国内 开心代理
     {
-        'urls': ['http://www.cnproxy.com/proxy%s.html' % i for i in range(1, 11)],
-        'type': 'module',
-        'moduleName': 'CnproxyPraser',
-        'pattern': r'<tr><td>(\d+\.\d+\.\d+\.\d+)<SCRIPT type=text/javascript>document.write\(\"\:\"(.+)\)</SCRIPT></td><td>(HTTP|SOCKS4)\s*',
-        'position': {'ip': 0, 'port': 1, 'type': -1, 'protocol': 2}
-    }
+        'urls': ['http://www.kxdaili.com/dailiip/1/%s.html' % n for n in range(1, 11)] + ['http://www.kxdaili.com/dailiip/2/%s.html' % n for n in range(1, 11)],
+        'type': 'xpath',
+        'pattern': ".//figure[@class='wp-block-table']/table/tbody/tr",
+        'position': {'ip': './td[1]', 'port': './td[2]', 'type': '', 'protocol': ''}
+    },
+
+    #https://www.kgtools.cn 国内 KGtools
+    {
+        'urls': ['https://www.kgtools.cn/api/proxy/ops/list/?label=1&name=全国代理ip&page=%s' % n for n in range(1, 21)],
+        'type': 'regular',
+        'pattern':  r'"proxy_ip":\s*"(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})",\s*"port":\s*"(\d+)"',
+        'position': {'ip': 0, 'port': 1, 'type': '', 'protocol': ''}
+    },
+
+    # https://www.89ip.cn 国内 69免费代理
+    {
+        'urls': ['https://www.69ip.cn/?page=%s' % n for n in range(1, 5)],
+        'type': 'xpath',
+        'pattern': ".//div[@class='layui-form']/table/tbody/tr",
+        'position': {'ip': './td[1]', 'port': './td[2]', 'type': '', 'protocol': ''}
+    },
+
+    # https://proxy.ip3366.net 国内 齐云代理
+    {
+        'urls': ['https://proxy.ip3366.net/free/?action=china&page=%s' % n for n in range(1, 11)],
+        'type': 'xpath',
+        'pattern': ".//table/tbody/tr",
+        'position': {'ip': './td[1]', 'port': './td[2]', 'type': '', 'protocol': ''}
+    },
+
+    # https://www.docip.net/ 国内 稻壳代理
+    {
+        'urls': ['https://www.docip.net/data/free.json'],
+        'type': 'regular',
+        'pattern':  r'(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}):(\d+)',
+        'position': {'ip': 0, 'port': 1, 'type': '', 'protocol': ''}
+    },
+
+    # https://www.kuaidaili.com/ 国内 快代理
+    {
+        'urls': [
+            'https://www.kuaidaili.com/free/dps/',
+            'https://www.kuaidaili.com/free/inha/',
+            'https://www.kuaidaili.com/free/intr/'
+        ],
+        'type': 'xpath',
+        'pattern': ".//table/tbody/tr",
+        'position': {'ip': './td[1]', 'port': './td[2]', 'type': '', 'protocol': ''}
+    },
+
+    # http://free-proxy.cz/ 国外 新鲜代理 需要翻墙
+    {
+        'urls':
+            ['http://free-proxy.cz/zh/proxylist/country/CN/https/ping/level1/%s' % n for n in range(1, 6)]  # 中国HTTPS
+            + ['http://free-proxy.cz/zh/proxylist/country/CN/http/ping/level1/%s' % n for n in range(1, 6)]  # 中国HTTP
+            + ['http://free-proxy.cz/zh/proxylist/country/all/https/ping/level1/%s' % n for n in range(1, 6)]  # 全部HTTPS
+            + ['http://free-proxy.cz/zh/proxylist/country/all/http/ping/level1/%s' % n for n in range(1, 6)]  # 全部HTTP
+        ,
+        'type': 'xpath',
+        'pattern': ".//div[@class='layui-form']/table/tbody/tr",
+        'position': {'ip': './td[1]', 'port': './td[2]', 'type': '', 'protocol': ''}
+    },
 ]
 '''
 数据库的配置
@@ -103,8 +210,8 @@ DB_CONFIG = {
 
     'DB_CONNECT_TYPE': 'sqlalchemy',  # 'pymongo'sqlalchemy;redis
     # 'DB_CONNECT_STRING':'mongodb://localhost:27017/'
-    'DB_CONNECT_STRING': 'sqlite:///' + os.path.dirname(__file__) + '/data/proxy.db'
-    # DB_CONNECT_STRING : 'mysql+mysqldb://root:root@localhost/proxy?charset=utf8'
+    # 'DB_CONNECT_STRING': 'sqlite:///' + os.path.dirname(__file__) + '/data/proxy.db'
+    'DB_CONNECT_STRING': 'mysql+pymysql://ip_proxy_pool:pTCeejECSFzya7y3@192.168.1.5/ip_proxy_pool?charset=utf8'
 
     # 'DB_CONNECT_TYPE': 'redis',  # 'pymongo'sqlalchemy;redis
     # 'DB_CONNECT_STRING': 'redis://localhost:6379/8',
@@ -122,10 +229,10 @@ API_PORT = 8000
 爬虫爬取和检测ip的设置条件
 不需要检测ip是否已经存在，因为会定时清理
 '''
-UPDATE_TIME = 30 * 60  # 每半个小时检测一次是否有代理ip失效
+UPDATE_TIME = 10 * 60  # 多久检测一次是否有代理ip失效(秒) 默认值：30*60
 MINNUM = 50  # 当有效的ip值小于一个时 需要启动爬虫进行爬取
 
-TIMEOUT = 5  # socket延时
+TIMEOUT = 10  # socket延时
 '''
 反爬虫的设置
 '''
@@ -201,8 +308,8 @@ CHECK_PROXY={'function':'checkProxy'}#{'function':'baidu_check'}
 #下面配置squid,现在还没实现
 #SQUID={'path':None,'confpath':'C:/squid/etc/squid.conf'}
 
-MAX_CHECK_PROCESS = 2 # CHECK_PROXY最大进程数
-MAX_CHECK_CONCURRENT_PER_PROCESS = 30 # CHECK_PROXY时每个进程的最大并发
+MAX_CHECK_PROCESS = 2 # CHECK_PROXY最大进程数 默认值：2
+MAX_CHECK_CONCURRENT_PER_PROCESS = 10 # CHECK_PROXY时每个进程的最大并发 默认值: 30 PS：，这里是个坑没达到数量就不验证IP
 TASK_QUEUE_SIZE = 50 # 任务队列SIZE
 MAX_DOWNLOAD_CONCURRENT = 3 # 从免费代理网站下载时的最大并发 
-CHECK_WATI_TIME = 1#进程数达到上限时的等待时间
+CHECK_WATI_TIME = 1 #进程数达到上限时的等待时间
