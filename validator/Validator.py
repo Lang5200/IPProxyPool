@@ -27,9 +27,15 @@ def detect_from_db(myip, proxy, proxies_set):
 
     else:
         if proxy[2] < 1:
+            str = f'IPProxyPool----->>>>>>>> 删除IP（{proxy[0]}:{proxy[1]}）'
+            sys.stdout.write(str + "\r\n")
+            sys.stdout.flush()
             sqlhelper.delete({'ip': proxy[0], 'port': proxy[1]})
         else:
             score = proxy[2]-1
+            str = f'IPProxyPool----->>>>>>>> IP（{proxy[0]}:{proxy[1]}） 当前分数：{score}'
+            sys.stdout.write(str + "\r\n")
+            sys.stdout.flush()
             sqlhelper.update({'ip': proxy[0], 'port': proxy[1]}, {'score': score})
             proxy_str = '%s:%s' % (proxy[0], proxy[1])
             proxies_set.add(proxy_str)
